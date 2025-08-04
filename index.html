@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>职工在线考试系统</title>
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <!-- 添加CryptoJS支持 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js"></script>
+    <!-- 添加MathJax支持 -->
+    <script id="MathJax-script"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js"></script>
+    <!-- <script type="text/javascript" charset=utf-8 defer="defer" src='./JS/vendor/mathjax.js'></script> -->
+    <link rel="stylesheet" href="./CSS/outstyle.css"> <!--引入外部样式-->
+    <!--style>...</style-->
+</head>
+
+<body>
+    <!-- 登录页面 -->
+    <div id="loginPage" class="login-container">
+        <div class="login-title">
+            <i class="fas fa-graduation-cap"></i>
+            <h1>职工在线考试系统</h1>
+            <p>安全、高效、便捷的在线考试平台</p>
+        </div>
+
+        <div class="form-group">
+            <label for="employeeId"><i class="fas fa-id-card"></i> 工号</label>
+            <input type="text" id="employeeId" class="form-control" placeholder="请输入您的工号">
+        </div>
+
+        <div class="form-group">
+            <label for="password"><i class="fas fa-lock"></i> 密码</label>
+            <input type="password" id="password" class="form-control" placeholder="请输入您的密码">
+        </div>
+
+        <!-- <div class="form-group">
+            <label for="username"><i class="fas fa-user"></i> 姓名</label>
+            <input type="text" id="username" class="form-control" placeholder="请输入您的姓名（仅学生需要填写）">
+        </div> -->
+
+        <button class="btn btn-primary btn-login" id="loginBtn">
+            <i class="fas fa-sign-in-alt"></i> 登录系统
+        </button>
+
+        <div class="server-info">
+            <h3><i class="fas fa-info-circle"></i> 使用说明</h3>
+            <p>登录只需输入工号及密码，无需注册即可使用系统。</p>
+            <p>若没有账号，可联系管理员注册。</p>
+        </div>
+    </div>
+
+    <!-- 主系统页面 -->
+    <div id="mainSystem" class="container" style="display: none;">
+        <div class="header">
+            <div class="logo">
+                <i class="fas fa-graduation-cap"></i>
+                <h1>职工在线考试系统</h1>
+            </div>
+            <div class="user-info">
+                <span><i class="fas fa-user"></i> <span id="currentUser">未登录</span></span>
+                <span><i class="fas fa-id-card"></i> <span id="employeeIdDisplay">未登录</span></span>
+                <span class="role-tag" id="currentRole">未登录</span>
+                <button class="btn btn-outline" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i> 退出
+                </button>
+            </div>
+        </div>
+
+        <div class="nav-menu">
+            <div class="nav-item active" data-section="exams">我的考试</div>
+            <div class="nav-item" data-section="grading">批改试卷</div>
+            <div class="nav-item" data-section="management">考试管理</div>
+            <div class="nav-item" data-section="results">成绩公示</div>
+            <div class="nav-item" data-section="config">系统配置</div>
+        </div>
+
+        <div class="content">
+            <!-- 我的考试 -->
+            <div id="examsSection" class="section active">
+                <h2 class="section-title"><i class="fas fa-book-open"></i> 我的考试</h2>
+                <div class="exam-cards" id="examCards">
+                    <!-- 考试卡片将通过JS动态生成 -->
+                </div>
+            </div>
+
+            <!-- 批改试卷 -->
+            <div id="gradingSection" class="section">
+                <h2 class="section-title"><i class="fas fa-check-circle"></i> 待批改试卷</h2>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>考生姓名</th>
+                            <th>考试名称</th>
+                            <th>提交时间</th>
+                            <th>客观题得分</th>
+                            <th>状态</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="gradingTable">
+                        <!-- 批改数据将通过JS动态生成 -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 考试管理 -->
+            <div id="managementSection" class="section">
+                <h2 class="section-title"><i class="fas fa-cogs"></i> 考试管理</h2>
+
+                <div class="exam-actions" style="margin-bottom: 25px;">
+                    <button class="btn btn-primary" id="createExamBtn">
+                        <i class="fas fa-plus"></i> 创建新考试
+                    </button>
+                    <button class="btn btn-outline" id="importQuestionsBtn">
+                        <i class="fas fa-file-import"></i> 导入试题
+                    </button>
+                </div>
+
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>考试名称</th>
+                            <th>类型</th>
+                            <th>题目数量</th>
+                            <th>状态</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="examManagementTable">
+                        <!-- 管理数据将通过JS动态生成 -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 成绩公示 -->
+            <div id="resultsSection" class="section">
+                <h2 class="section-title"><i class="fas fa-chart-line"></i> 成绩公示</h2>
+
+                <div class="stats-container">
+                    <!-- 通过JS动态生成 -->
+                </div>
+
+                <div class="chart-container">
+                    <canvas id="scoreChart"></canvas>
+                </div>
+
+                <h3 style="margin: 30px 0 15px; color: #2c3e50;">考试成绩排名</h3>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>排名</th>
+                            <th>姓名</th>
+                            <th>工号</th>
+                            <th>考试名称</th>
+                            <th>分数</th>
+                            <th>用时</th>
+                            <th>状态</th>
+                        </tr>
+                    </thead>
+                    <tbody id="resultsTable">
+                        <!-- 成绩数据将通过JS动态生成 -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 考试页面 -->
+            <div id="examSection" class="section">
+                <div class="exam-page">
+                    <div class="exam-header-info">
+                        <div class="exam-title-bar" id="currentExamTitle">岗位技能考核</div>
+                        <div class="exam-timer" id="examTimer">
+                            <i class="fas fa-clock"></i>
+                            <span id="timeRemaining">45:00</span>
+                        </div>
+                    </div>
+
+                    <div class="progress-container">
+                        <div class="progress-label">
+                            <span>答题进度</span>
+                            <span id="progressValue">0%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+                        </div>
+                    </div>
+
+                    <div class="question-container" id="questionContainer">
+                        <!-- 题目将通过JS动态生成 -->
+                    </div>
+
+                    <div class="pagination" id="pagination">
+                        <!-- 分页按钮将通过JS动态生成 -->
+                    </div>
+
+                    <div class="exam-actions-bar">
+                        <button class="btn btn-outline" id="prevQuestionBtn">
+                            <i class="fas fa-arrow-left"></i> 上一题
+                        </button>
+                        <button class="btn btn-primary" id="nextQuestionBtn">
+                            下一题 <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+
+                    <div class="submit-section">
+                        <button class="btn btn-success" id="submitExamBtn">
+                            <i class="fas fa-paper-plane"></i> 提交试卷
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 考试结果页面 -->
+            <div id="resultSection" class="section">
+                <div class="exam-result">
+                    <i class="fas fa-check-circle result-icon"></i>
+                    <h2 class="result-title">考试已完成</h2>
+                    <p>感谢您完成本次岗位技能考核</p>
+
+                    <div class="result-score" id="finalScore">0</div>
+
+                    <div class="result-details">
+                        <div class="detail-card">
+                            <div class="detail-value" id="totalQuestions">0</div>
+                            <div class="detail-label">总题数</div>
+                        </div>
+                        <div class="detail-card">
+                            <div class="detail-value" id="answeredQuestions">0</div>
+                            <div class="detail-label">已答题数</div>
+                        </div>
+                        <div class="detail-card">
+                            <div class="detail-value" id="correctAnswers">0</div>
+                            <div class="detail-label">答对题数</div>
+                        </div>
+                        <div class="detail-card">
+                            <div class="detail-value" id="examTime">00:00</div>
+                            <div class="detail-label">考试用时</div>
+                        </div>
+                    </div>
+
+                    <div class="chart-container">
+                        <canvas id="resultChart"></canvas>
+                    </div>
+
+                    <button class="btn btn-primary" id="backToExamsBtn">
+                        <i class="fas fa-arrow-left"></i> 返回我的考试
+                    </button>
+                </div>
+            </div>
+
+            <!-- 系统配置 -->
+            <div id="configSection" class="section">
+                <h2 class="section-title"><i class="fas fa-cog"></i> 系统配置</h2>
+                <div class="config-container">
+                    <!-- 数据管理 -->
+                    <div class="card">
+                        <div class="card-title">
+                            <h3><i class="fas fa-database"></i> 数据管理</h3>
+                        </div>
+                        <div class="form-group">
+                            <label>删除指定考生考试数据</label>
+                            <div class="action-buttons">
+                                <select id="examSelect" class="form-control"
+                                    style="width: 250px; display: inline-block; margin-right: 10px;">
+                                    <option value="">请选择考试科目</option>
+                                </select>
+                                <select id="studentSelect" class="form-control"
+                                    style="width: 200px; display: inline-block; margin-right: 10px;">
+                                    <option value="">请选择考生</option>
+                                </select>
+                                <button id="deleteExamDataBtn" class="btn btn-danger"><i class="fas fa-trash-alt"></i>
+                                    删除数据</button>
+                            </div>
+                            <!-- 信息卡片容器 -->
+                            <div class="info-cards-container">
+                                <!-- 考试信息显示区域 -->                                
+                                <div id="examInfo" class="info-card"><!-- <div id="examInfo" class="info-card" style="display: none;"> -->
+                                    <h4><i class="fas fa-info-circle"></i> 考试信息</h4>
+                                    <div class="info-item"><span class="info-label">考试名称:</span> <span
+                                            id="examNameInfo"></span></div>
+                                    <div class="info-item"><span class="info-label">考试编号:</span> <span
+                                            id="examIDInfo"></span></div>
+                                    <div class="info-item"><span class="info-label">考试描述:</span> <span
+                                            id="examDescriptionInfo"></span></div>
+                                    <!-- <div class="info-item"><span class="info-label">考试类型:</span> <span
+                                            id="examTypeInfo"></span></div> -->
+                                    <!-- <div class="info-item"><span class="info-label">考试时长:</span> <span
+                                            id="examDurationInfo"></span> 分钟</div>
+                                    <div class="info-item"><span class="info-label">开始时间:</span> <span
+                                            id="examStartTimeInfo"></span></div>
+                                    <div class="info-item"><span class="info-label">结束时间:</span> <span
+                                            id="examEndTimeInfo"></span></div> -->
+                                </div>
+                                <!-- 考生信息显示区域 -->
+                                <div id="studentInfo" class="info-card"><!-- style="display: none;" -->
+                                    <h4><i class="fas fa-user-circle"></i> 考生信息</h4>
+                                    <div class="info-item"><span class="info-label">姓名:</span> <span
+                                            id="studentNameInfo"></span></div>
+                                    <div class="info-item"><span class="info-label">工号:</span> <span
+                                            id="studentIdInfo"></span></div>
+                                    <!-- <div class="info-item"><span class="info-label">部门:</span> <span id="studentDeptInfo"></span></div> -->
+                                    <div class="info-item"><span class="info-label">角色:</span> <span
+                                            id="studentRoleInfo"></span></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>清除考试数据</label>
+                            <div class="action-buttons">
+                                <button id="clearAnswersBtn" class="btn btn-danger"><i class="fas fa-trash-alt"></i>
+                                    清除answers.json</button>
+                                <button id="clearResultsBtn" class="btn btn-danger"><i class="fas fa-trash-alt"></i>
+                                    清除results.json</button>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>导入用户数据</label>
+                            <div class="action-buttons">
+                                <button type="button" id="importUserDataBtn" class="btn btn-primary"><i
+                                        class="fas fa-upload"></i> 选择Excel文件</button>
+                                <input type="file" id="userDataUpload" accept=".xlsx,.xls" class="file-input"
+                                    style="display: none;">
+                                <span id="fileSelectedName" class="file-name"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>导出考试成绩</label>
+                            <div class="action-buttons">
+                                <button id="exportResultsBtn" class="btn btn-primary"><i class="fas fa-download"></i>
+                                    导出为Excel</button>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>导出考生答案</label>
+                            <div class="action-buttons">
+                                <button id="exportAnswersBtn" class="btn btn-primary"><i class="fas fa-download"></i>
+                                    导出为JSON</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 阅卷设置 -->
+                    <div class="card">
+                        <div class="card-title">
+                            <h3><i class="fas fa-check-square"></i> 阅卷设置</h3>
+                        </div>
+                        <div class="form-group">
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="onlyShortAnswerToggle" checked>
+                                <span class="slider round"></span>
+                                <span class="toggle-label">仅显示需要评分的主观题型</span>
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="autoUpdateExamStatusToggle">
+                                <span class="slider round"></span>
+                                <span class="toggle-label">启用考试状态自动更新</span>
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="includeAnswersInExportToggle">
+                                <span class="slider round"></span>
+                                <span class="toggle-label">导出试卷时包含参考答案</span>
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="practiceModeToggle">
+                                <span class="slider round"></span>
+                                <span class="toggle-label">启用练习模式</span>
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="allowStudentsViewAnswersToggle">
+                                <span class="slider round"></span>
+                                <span class="toggle-label">允许考生查看答案</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>© 2025 职工在线考试系统 | 技术支持：熊睿</p>
+        </div>
+    </div>
+
+    <!-- 考试管理模态框 -->
+    <div id="examModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title"><i class="fas fa-book"></i> <span id="modalTitle">创建新考试</span></h3>
+                <span class="close-modal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="examForm">
+                    <input type="hidden" id="examId">
+                    <div class="form-row">
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label for="examName">考试名称</label>
+                                <input type="text" id="examName" class="form-control" placeholder="请输入考试名称" required>
+                            </div>
+                        </div>
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label for="examType">考试类型</label>
+                                <select id="examType" class="form-control" required>
+                                    <option value="">请选择考试类型</option>
+                                    <option value="固定试卷" selected="selected">固定试卷</option>
+                                    <option value="随机试卷">随机试卷</option>
+                                    <option value="时段试卷">时段试卷</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label for="questionCount">题目数量</label>
+                                <input type="number" value="20" id="questionCount" class="form-control"
+                                    placeholder="请输入题目数量" min="1" required>
+                            </div>
+                        </div>
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label for="examDuration">考试时长(分钟)</label>
+                                <input type="number" value="45" id="examDuration" class="form-control"
+                                    placeholder="请输入考试时长" min="1" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label for="startTime">开始时间</label>
+                                <input type="datetime-local" id="startTime" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label for="endTime">结束时间</label>
+                                <input type="datetime-local" id="endTime" class="form-control" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="examDescription">考试描述</label>
+                        <textarea id="examDescription" class="form-control" rows="3" placeholder="请输入考试描述"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-outline" id="cancelExamBtn">取消</button>
+                <button class="btn btn-primary" id="saveExamBtn">保存考试</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 导入试题模态框 -->
+    <div id="importModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title"><i class="fas fa-file-import"></i> 导入试题</h3>
+                <span class="close-modal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="upload-area" id="uploadArea">
+                    <div class="upload-icon">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                    </div>
+                    <div class="upload-text">
+                        <h3>拖放文件到此处或点击上传</h3>
+                        <p>支持格式: Excel (.xlsx, .xls), CSV</p>
+                        <p>最大文件大小: 10MB</p>
+                    </div>
+                    <button class="btn btn-primary" id="selectFileBtn">
+                        <i class="fas fa-folder-open"></i> 选择文件
+                    </button>
+                    <input type="file" id="fileInput" class="file-input" accept=".xlsx,.xls,.csv">
+                    <div class="file-info" id="fileInfo">
+                        <i class="fas fa-file"></i>
+                        <span id="fileName"></span>
+                        <span id="fileSize"></span>
+                    </div>
+                </div>
+
+                <div class="preview-container" id="previewContainer">
+                    <h3 class="preview-title"><i class="fas fa-eye"></i> 试题预览</h3>
+                    <div id="questionPreview"></div>
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-outline" id="cancelImportBtn">取消</button>
+                <button class="btn btn-primary" id="importBtn" disabled>导入试题</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 批改试卷模态框 -->
+    <div id="gradingModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title"><i class="fas fa-check-circle"></i> 试卷批改</h3>
+                <span class="close-modal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="exam-info-card">
+                    <div class="exam-info-item">
+                        <div class="info-label">考生姓名</div>
+                        <div class="info-value" id="studentName">-</div>
+                    </div>
+                    <div class="exam-info-item">
+                        <div class="info-label">工号</div>
+                        <div class="info-value" id="userId">-</div>
+                    </div>
+                    <div class="exam-info-item">
+                        <div class="info-label">考试名称</div>
+                        <div class="info-value" id="examNameG">-</div>
+                    </div>
+                    <!--div class="exam-info-item">
+                        <div class="info-label">考试时间</div>
+                        <div class="info-value" id="examDurationG">-</div>
+                    </div-->
+                    <div class="exam-info-item">
+                        <div class="info-label">客观题得分</div>
+                        <div class="info-value" id="objectiveScore">-</div>
+                    </div>
+                    <div class="exam-info-item">
+                        <div class="info-label">主观题得分</div>
+                        <div class="info-value" id="subjectiveScorePreview">-</div>
+                    </div>
+                    <div class="exam-info-item">
+                        <div class="info-label">总分</div>
+                        <div class="info-value" id="totalScorePreview">-</div>
+                    </div>
+                </div>
+
+                <div id="questionsContainer">
+                    <!-- 题目将通过JS动态生成 -->
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-outline" id="cancelGradingBtn">取消</button>
+                <button class="btn btn-success" id="submitGradingBtn">提交批改结果</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 操作提示 -->
+    <div id="actionMessage" class="action-message"></div>
+
+    <!-- 使用备用 CDN 并确保加载顺序 content-type:text/plain type="module" "./JS/main.js?v=1"-->
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script> -->
+    <script type="text/javascript" charset=utf-8 defer="defer" src='./JS/vendor/chart.min.js?v=1'></script>
+    <script type="module" charset="utf-8" defer src="./JS/main.js?v=1"></script>
+    <!-- <script type=text/javascript charset=utf-8 defer="defer" src='./JS/utils/dom.js'></script>
+    <script type=text/javascript charset=utf-8 defer="defer" src='./JS/utils/format.js'></script>
+    <script type=text/javascript charset=utf-8 defer="defer" src='./JS/modules/log.js'></script>
+    <script type=text/javascript charset=utf-8 defer="defer" src='./JS/modules/examRender.js'></script>
+    <script type=text/javascript charset=utf-8 defer="defer" src='./JS/modules/gradingLogic.js'></script>
+    <script type=text/javascript charset=utf-8 defer="defer" src='./JS/modules/examManagement.js'></script>
+    <script type=text/javascript charset=utf-8 defer="defer" src='./JS/modules/results.js'></script> -->
+    <!-- <script src="JS/modules/config.js" type="module"></script> -->
+</body>
+
+</html>
