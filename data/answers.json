@@ -1,0 +1,336 @@
+[
+  {
+    "examId": 1,
+    "examName": "会计学",
+    "duration": 45,
+    "submissions": [
+      {
+        "userId": "S002",
+        "userName": "杜双利",
+        "startTime": "2025-08-04T12:29",
+        "endTime": "2025-08-04T12:29",
+        "examTime": "00:07",
+        "objectiveScore": 1.5,
+        "subjectiveScore": null,
+        "totalScore": 1.5,
+        "answers": [
+          {
+            "id": 1,
+            "type": "single",
+            "userAnswer": "a"
+          },
+          {
+            "id": 2,
+            "type": "single",
+            "userAnswer": ""
+          },
+          {
+            "id": 3,
+            "type": "single",
+            "userAnswer": ""
+          },
+          {
+            "id": 4,
+            "type": "single",
+            "userAnswer": "c"
+          },
+          {
+            "id": 5,
+            "type": "single",
+            "userAnswer": ""
+          },
+          {
+            "id": 6,
+            "type": "single",
+            "userAnswer": ""
+          },
+          {
+            "id": 7,
+            "type": "single",
+            "userAnswer": ""
+          },
+          {
+            "id": 8,
+            "type": "single",
+            "userAnswer": ""
+          },
+          {
+            "id": 9,
+            "type": "single",
+            "userAnswer": ""
+          },
+          {
+            "id": 10,
+            "type": "single",
+            "userAnswer": ""
+          },
+          {
+            "id": 16,
+            "type": "multiple",
+            "userAnswer": ""
+          },
+          {
+            "id": 17,
+            "type": "multiple",
+            "userAnswer": ""
+          },
+          {
+            "id": 18,
+            "type": "multiple",
+            "userAnswer": ""
+          },
+          {
+            "id": 19,
+            "type": "multiple",
+            "userAnswer": ""
+          },
+          {
+            "id": 20,
+            "type": "multiple",
+            "userAnswer": ""
+          },
+          {
+            "id": 21,
+            "type": "judge",
+            "userAnswer": ""
+          },
+          {
+            "id": 22,
+            "type": "judge",
+            "userAnswer": ""
+          },
+          {
+            "id": 23,
+            "type": "judge",
+            "userAnswer": ""
+          },
+          {
+            "id": 24,
+            "type": "judge",
+            "userAnswer": ""
+          },
+          {
+            "id": 25,
+            "type": "judge",
+            "userAnswer": ""
+          },
+          {
+            "id": 26,
+            "type": "judge",
+            "userAnswer": ""
+          },
+          {
+            "id": 27,
+            "type": "judge",
+            "userAnswer": ""
+          },
+          {
+            "id": 28,
+            "type": "judge",
+            "userAnswer": ""
+          },
+          {
+            "id": 29,
+            "type": "judge",
+            "userAnswer": ""
+          },
+          {
+            "id": 30,
+            "type": "judge",
+            "userAnswer": ""
+          },
+          {
+            "id": 36,
+            "type": "fill-blank",
+            "userAnswer": ""
+          },
+          {
+            "id": 37,
+            "type": "fill-blank",
+            "userAnswer": ""
+          },
+          {
+            "id": 38,
+            "type": "fill-blank",
+            "userAnswer": ""
+          },
+          {
+            "id": 39,
+            "type": "fill-blank",
+            "userAnswer": ""
+          },
+          {
+            "id": 40,
+            "type": "fill-blank",
+            "userAnswer": ""
+          },
+          {
+            "id": 46,
+            "type": "short-answer",
+            "userAnswer": ""
+          },
+          {
+            "id": 47,
+            "type": "short-answer",
+            "userAnswer": ""
+          },
+          {
+            "id": 48,
+            "type": "short-answer",
+            "userAnswer": ""
+          },
+          {
+            "id": 49,
+            "type": "case-analysis",
+            "userAnswer": [
+              ""
+            ]
+          },
+          {
+            "id": 50,
+            "type": "case-analysis",
+            "userAnswer": [
+              ""
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "examId": 2,
+    "examName": "政府会计制度",
+    "duration": 50,
+    "submissions": [
+      {
+        "userId": "S001",
+        "userName": "王小明",
+        "startTime": "2025-08-04T12:29",
+        "endTime": "2025-08-04T12:29",
+        "examTime": "00:05",
+        "objectiveScore": 2,
+        "subjectiveScore": null,
+        "totalScore": 2,
+        "answers": [
+          {
+            "id": 1,
+            "type": "single",
+            "userAnswer": "c"
+          },
+          {
+            "id": 2,
+            "type": "single",
+            "userAnswer": ""
+          },
+          {
+            "id": 3,
+            "type": "single",
+            "userAnswer": ""
+          },
+          {
+            "id": 4,
+            "type": "single",
+            "userAnswer": ""
+          },
+          {
+            "id": 5,
+            "type": "single",
+            "userAnswer": ""
+          },
+          {
+            "id": 7,
+            "type": "single",
+            "userAnswer": ""
+          },
+          {
+            "id": 8,
+            "type": "single",
+            "userAnswer": ""
+          },
+          {
+            "id": 9,
+            "type": "single",
+            "userAnswer": ""
+          },
+          {
+            "id": 10,
+            "type": "single",
+            "userAnswer": ""
+          },
+          {
+            "id": 21,
+            "type": "multiple",
+            "userAnswer": ""
+          },
+          {
+            "id": 22,
+            "type": "multiple",
+            "userAnswer": ""
+          },
+          {
+            "id": 23,
+            "type": "multiple",
+            "userAnswer": ""
+          },
+          {
+            "id": 24,
+            "type": "multiple",
+            "userAnswer": ""
+          },
+          {
+            "id": 25,
+            "type": "multiple",
+            "userAnswer": ""
+          },
+          {
+            "id": 31,
+            "type": "judge",
+            "userAnswer": ""
+          },
+          {
+            "id": 32,
+            "type": "judge",
+            "userAnswer": ""
+          },
+          {
+            "id": 33,
+            "type": "judge",
+            "userAnswer": ""
+          },
+          {
+            "id": 34,
+            "type": "judge",
+            "userAnswer": ""
+          },
+          {
+            "id": 35,
+            "type": "judge",
+            "userAnswer": ""
+          },
+          {
+            "id": 41,
+            "type": "short-answer",
+            "userAnswer": ""
+          },
+          {
+            "id": 42,
+            "type": "short-answer",
+            "userAnswer": ""
+          },
+          {
+            "id": 43,
+            "type": "short-answer",
+            "userAnswer": ""
+          },
+          {
+            "id": 44,
+            "type": "case-analysis",
+            "userAnswer": [
+              ""
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]

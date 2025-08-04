@@ -1,0 +1,32 @@
+[
+  {
+    "rank": null,
+    "userId": "S001",
+    "userName": "王小明",
+    "examId": 2,
+    "examName": "政府会计制度",
+    "objectiveScore": 2,
+    "subjectiveScore": null,
+    "totalScore": 2,
+    "startTime": "2025-08-04T12:29",
+    "endTime": "2025-08-04T12:29",
+    "examTime": "00:05",
+    "gradingStatus": "待批改",
+    "examStatus": "未通过"
+  },
+  {
+    "rank": null,
+    "userId": "S002",
+    "userName": "杜双利",
+    "examId": 1,
+    "examName": "会计学",
+    "objectiveScore": 1.5,
+    "subjectiveScore": null,
+    "totalScore": 1.5,
+    "startTime": "2025-08-04T12:29",
+    "endTime": "2025-08-04T12:29",
+    "examTime": "00:07",
+    "gradingStatus": "待批改",
+    "examStatus": "未通过"
+  }
+]

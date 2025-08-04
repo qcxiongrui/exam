@@ -1,0 +1,44 @@
+{
+  "A001": {
+    "id": "A001",
+    "name": "熊睿",
+    "password": "U2FsdGVkX1+QQCaQ3+TS2YaSUGyQbTZbBsA7AmBkFeY=",
+    "role": "admin"
+  },
+  "T001": {
+    "id": "T001",
+    "name": "熊睿",
+    "password": "U2FsdGVkX18y5vZUNAS95nj0DAs4haJjbNnLEnVRfss=",
+    "role": "teacher"
+  },
+  "S001": {
+    "id": "S001",
+    "name": "王小明",
+    "password": "U2FsdGVkX19bFitqjfmaJbaE8zB2n58MbzmsCSId+7Q=",
+    "role": "student"
+  },
+  "S002": {
+    "id": "S002",
+    "name": "杜双利",
+    "password": "U2FsdGVkX18c7bQDHmDI4GFttODn3lLe8klp5YlZrik=",
+    "role": "student"
+  },
+  "S003": {
+    "id": "S003",
+    "name": "熊欣桐",
+    "password": "U2FsdGVkX1+Vec7o+y8otNZddxPOWLisXUqDff1DAyk=",
+    "role": "student"
+  },
+  "S004": {
+    "id": "S004",
+    "name": "熊欣怡",
+    "password": "U2FsdGVkX19iCfwqf9xhRlKz0dxXKavzbs5YEyffqaI=",
+    "role": "student"
+  },
+  "S005": {
+    "id": "S005",
+    "name": "王五",
+    "password": "U2FsdGVkX1+PLNrohBcHOPuXZaRIBk09krmrXTF1XvI=",
+    "role": "student"
+  }
+}
